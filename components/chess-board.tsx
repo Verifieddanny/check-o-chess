@@ -39,7 +39,8 @@ export default function ChessBoard() {
   const [moveHistory, setMoveHistory] = useState<Move[]>([])
   const [currentMove, setCurrentMove] = useState(0)
   const [draggedPiece, setDraggedPiece] = useState<{ piece: string; from: string } | null>(null)
-  const [timeElapsed, setTimeElapsed] = useState(0)
+  // const [timeElapsed, setTimeElapsed] = useState(0)
+  const timeElapsed = 0
   const [hintsUsed, setHintsUsed] = useState(0)
   const [puzzleSolved, setPuzzleSolved] = useState(false)
   const [showHint, setShowHint] = useState(false)
@@ -145,14 +146,22 @@ export default function ChessBoard() {
    * destination square, optional promotion (e.g. '=Q'), and optional
    * check/mate suffix (+/#).  Castling is represented as 'O-O' or 'O-O-O'.
    */
-  function parseSAN(token: string) {
+  function parseSAN(token: string): MoveData {
     // Normalise zeros to capital letter O for castling notation
     const move = token.replace(/0/g, "O")
     // Check castling
     const castleMatch = /^(O-O(-O)?)$/.exec(move)
     if (castleMatch) {
       const castle = castleMatch[1] === "O-O" ? "O-O" : "O-O-O"
-      return { castle }
+      // Provide all required fields for MoveData, using defaults
+      return {
+        piece: "K",
+        disambiguation: "",
+        capture: false,
+        dest: "",
+        promotion: null,
+        castle,
+      }
     }
     // Standard SAN: optional piece, optional from file, optional from rank,
     // optional capture, required dest square, optional promotion, optional check/mate
@@ -208,13 +217,22 @@ export default function ChessBoard() {
    * ignores check, en passant and castling rights, as the goal is only to
    * reconstruct the static board state.
    */
+  interface MoveData {
+    piece: string
+    disambiguation: string
+    capture: boolean
+    dest: string
+    promotion: string | null
+    castle: string | null
+  }
+
   function canPieceMove(
     board: (string | null)[][],
     fromRank: number,
     fromFile: number,
     toRank: number,
     toFile: number,
-    moveData: any,
+    moveData: MoveData,
     color: "w" | "b",
   ): boolean {
     const piece = board[fromRank][fromFile]
@@ -335,7 +353,7 @@ export default function ChessBoard() {
    */
   function applyMove(
     board: (string | null)[][],
-    moveData: any,
+    moveData: MoveData,
     color: "w" | "b",
   ): { board: (string | null)[][]; success: boolean } {
     const b = board.map((row) => row.slice())

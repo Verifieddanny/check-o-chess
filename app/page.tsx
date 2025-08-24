@@ -14,9 +14,12 @@ import ProInsights from "@/components/pro-insights"
 
 export default function ChessPuzzleApp() {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [currentStreak, setCurrentStreak] = useState(12)
-  const [dailyPuzzlesSolved, setDailyPuzzlesSolved] = useState(1)
-  const [chessTokens, setChessTokens] = useState(2450)
+  // const [currentStreak, setCurrentStreak] = useState(12)
+  const currentStreak = 12
+  // const [dailyPuzzlesSolved, setDailyPuzzlesSolved] = useState(1)
+  const dailyPuzzlesSolved = 1
+  // const [chessTokens, setChessTokens] = useState(2450)
+  const chessTokens = 2450
   const [activeTab, setActiveTab] = useState("puzzles")
 
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function ChessPuzzleApp() {
           <div className="inline-flex items-center gap-3 mb-4 p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
             <div className="text-4xl">👑</div>
             <div>
-              <h1 className="text-3xl font-bold text-white">Check'0Chess</h1>
+              <h1 className="text-3xl font-bold text-white">Check&apos;0Chess</h1>
               <p className="text-purple-200 text-sm">Solve • Stake • Earn</p>
             </div>
           </div>

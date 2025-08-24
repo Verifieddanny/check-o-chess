@@ -1,32 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { RefreshCw, Download, ExternalLink } from "lucide-react"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { RefreshCw, Download, ExternalLink } from "lucide-react";
 
 interface LichessPuzzle {
-  id: string
-  fen: string
-  moves: string[]
-  rating: number
-  ratingDeviation: number
-  popularity: number
-  nbPlays: number
-  themes: string[]
-  gameUrl: string
-  openingTags: string[]
+  id: string;
+  fen: string;
+  moves: string[];
+  rating: number;
+  ratingDeviation: number;
+  popularity: number;
+  nbPlays: number;
+  themes: string[];
+  gameUrl: string;
+  openingTags: string[];
 }
 
 export default function PuzzleLoader() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [puzzleStats, setPuzzleStats] = useState({
+  const [isLoading, setIsLoading] = useState(false);
+  // const [puzzleStats, setPuzzleStats] = useState({
+  //   totalPuzzles: 5036915,
+  //   lastUpdated: "2025-07-02",
+  //   avgRating: 1650,
+  //   themes: 47,
+  // })
+
+  const puzzleStats = {
     totalPuzzles: 5036915,
     lastUpdated: "2025-07-02",
     avgRating: 1650,
     themes: 47,
-  })
+  };
 
   // Sample puzzle data in Lichess format
   const samplePuzzles: LichessPuzzle[] = [
@@ -50,19 +57,26 @@ export default function PuzzleLoader() {
       ratingDeviation: 105,
       popularity: 87,
       nbPlays: 325,
-      themes: ["advantage", "attraction", "fork", "middlegame", "sacrifice", "veryLong"],
+      themes: [
+        "advantage",
+        "attraction",
+        "fork",
+        "middlegame",
+        "sacrifice",
+        "veryLong",
+      ],
       gameUrl: "https://lichess.org/gyFeQsOE#35",
       openingTags: ["French_Defense", "French_Defense_Exchange_Variation"],
     },
-  ]
+  ];
 
   const loadNewPuzzle = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     // Simulate loading from Lichess database
     setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-  }
+      setIsLoading(false);
+    }, 1500);
+  };
 
   const getThemeEmoji = (theme: string) => {
     const themeEmojis: { [key: string]: string } = {
@@ -83,9 +97,9 @@ export default function PuzzleLoader() {
       short: "⚡",
       long: "⏳",
       veryLong: "🕐",
-    }
-    return themeEmojis[theme] || "🎲"
-  }
+    };
+    return themeEmojis[theme] || "🎲";
+  };
 
   return (
     <div className="space-y-6">
@@ -100,15 +114,21 @@ export default function PuzzleLoader() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-3 bg-blue-500/10 rounded-xl border border-blue-500/20">
-              <div className="text-xl font-bold text-blue-400">{puzzleStats.totalPuzzles.toLocaleString()}</div>
+              <div className="text-xl font-bold text-blue-400">
+                {puzzleStats.totalPuzzles.toLocaleString()}
+              </div>
               <div className="text-xs text-purple-200">Total Puzzles</div>
             </div>
             <div className="text-center p-3 bg-green-500/10 rounded-xl border border-green-500/20">
-              <div className="text-xl font-bold text-green-400">{puzzleStats.avgRating}</div>
+              <div className="text-xl font-bold text-green-400">
+                {puzzleStats.avgRating}
+              </div>
               <div className="text-xs text-purple-200">Avg Rating</div>
             </div>
             <div className="text-center p-3 bg-purple-500/10 rounded-xl border border-purple-500/20">
-              <div className="text-xl font-bold text-purple-400">{puzzleStats.themes}</div>
+              <div className="text-xl font-bold text-purple-400">
+                {puzzleStats.themes}
+              </div>
               <div className="text-xs text-purple-200">Themes</div>
             </div>
             <div className="text-center p-3 bg-amber-500/10 rounded-xl border border-amber-500/20">
@@ -123,7 +143,11 @@ export default function PuzzleLoader() {
               disabled={isLoading}
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl"
             >
-              {isLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+              {isLoading ? (
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <RefreshCw className="w-4 h-4 mr-2" />
+              )}
               Load New Puzzle
             </Button>
 
@@ -137,8 +161,9 @@ export default function PuzzleLoader() {
           </div>
 
           <div className="text-xs text-purple-300 bg-white/5 p-3 rounded-lg">
-            <strong>📊 Database Format:</strong> Puzzles use FEN notation with UCI moves. Rating calculated via Glicko2
-            system. Last updated: {puzzleStats.lastUpdated}
+            <strong>📊 Database Format:</strong> Puzzles use FEN notation with
+            UCI moves. Rating calculated via Glicko2 system. Last updated:{" "}
+            {puzzleStats.lastUpdated}
           </div>
         </CardContent>
       </Card>
@@ -150,7 +175,7 @@ export default function PuzzleLoader() {
           Featured Puzzles
         </h3>
 
-        {samplePuzzles.map((puzzle, index) => (
+        {samplePuzzles.map((puzzle,) => (
           <Card
             key={puzzle.id}
             className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300"
@@ -160,11 +185,17 @@ export default function PuzzleLoader() {
                 <div>
                   <CardTitle className="text-white flex items-center gap-2">
                     <span className="text-lg">#{puzzle.id}</span>
-                    <Badge className="bg-blue-500/20 text-blue-300">📊 {puzzle.rating}</Badge>
+                    <Badge className="bg-blue-500/20 text-blue-300">
+                      📊 {puzzle.rating}
+                    </Badge>
                   </CardTitle>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs text-purple-200">⭐ {puzzle.popularity}% popularity</span>
-                    <span className="text-xs text-purple-200">🎮 {puzzle.nbPlays} plays</span>
+                    <span className="text-xs text-purple-200">
+                      ⭐ {puzzle.popularity}% popularity
+                    </span>
+                    <span className="text-xs text-purple-200">
+                      🎮 {puzzle.nbPlays} plays
+                    </span>
                   </div>
                 </div>
 
@@ -183,7 +214,10 @@ export default function PuzzleLoader() {
               {/* Themes */}
               <div className="flex gap-2 flex-wrap">
                 {puzzle.themes.map((theme, themeIndex) => (
-                  <Badge key={themeIndex} className="bg-purple-500/20 text-purple-300 text-xs flex items-center gap-1">
+                  <Badge
+                    key={themeIndex}
+                    className="bg-purple-500/20 text-purple-300 text-xs flex items-center gap-1"
+                  >
                     <span>{getThemeEmoji(theme)}</span>
                     {theme}
                   </Badge>
@@ -194,7 +228,10 @@ export default function PuzzleLoader() {
               {puzzle.openingTags.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
                   {puzzle.openingTags.map((opening, openingIndex) => (
-                    <Badge key={openingIndex} className="bg-green-500/20 text-green-300 text-xs">
+                    <Badge
+                      key={openingIndex}
+                      className="bg-green-500/20 text-green-300 text-xs"
+                    >
                       🚀 {opening.replace(/_/g, " ")}
                     </Badge>
                   ))}
@@ -203,14 +240,22 @@ export default function PuzzleLoader() {
 
               {/* FEN Position */}
               <div className="bg-white/5 p-3 rounded-lg">
-                <div className="text-xs text-purple-200 mb-1">FEN Position:</div>
-                <div className="text-xs font-mono text-white break-all">{puzzle.fen}</div>
+                <div className="text-xs text-purple-200 mb-1">
+                  FEN Position:
+                </div>
+                <div className="text-xs font-mono text-white break-all">
+                  {puzzle.fen}
+                </div>
               </div>
 
               {/* Solution Moves */}
               <div className="bg-white/5 p-3 rounded-lg">
-                <div className="text-xs text-purple-200 mb-1">Solution (UCI):</div>
-                <div className="text-xs font-mono text-amber-400">{puzzle.moves.join(" → ")}</div>
+                <div className="text-xs text-purple-200 mb-1">
+                  Solution (UCI):
+                </div>
+                <div className="text-xs font-mono text-amber-400">
+                  {puzzle.moves.join(" → ")}
+                </div>
               </div>
 
               <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl">
@@ -221,5 +266,5 @@ export default function PuzzleLoader() {
         ))}
       </div>
     </div>
-  )
+  );
 }

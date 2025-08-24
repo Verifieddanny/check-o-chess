@@ -21,15 +21,15 @@ export default function ProInsights() {
     weakestCategory: "Endgames",
   }
 
-  const heatmapData = [
-    { day: "Mon", hour: "6AM", intensity: 20 },
-    { day: "Mon", hour: "12PM", intensity: 60 },
-    { day: "Mon", hour: "6PM", intensity: 90 },
-    { day: "Tue", hour: "6AM", intensity: 30 },
-    { day: "Tue", hour: "12PM", intensity: 70 },
-    { day: "Tue", hour: "6PM", intensity: 85 },
-    // ... more data points
-  ]
+  // const heatmapData = [
+  //   { day: "Mon", hour: "6AM", intensity: 20 },
+  //   { day: "Mon", hour: "12PM", intensity: 60 },
+  //   { day: "Mon", hour: "6PM", intensity: 90 },
+  //   { day: "Tue", hour: "6AM", intensity: 30 },
+  //   { day: "Tue", hour: "12PM", intensity: 70 },
+  //   { day: "Tue", hour: "6PM", intensity: 85 },
+  //   // ... more data points
+  // ]
 
   const errorPatterns = [
     { type: "Time Pressure", frequency: 34, trend: "increasing" },

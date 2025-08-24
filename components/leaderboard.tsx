@@ -206,7 +206,7 @@ export default function Leaderboard() {
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Star className="w-6 h-6 text-purple-400" />
-                This Week's Champions
+                This Week&apos;s Champions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
