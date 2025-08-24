@@ -53,7 +53,7 @@ export default function ChessBoard() {
     popularity: 0,
   })
 
-  const boardRef = useRef<HTMLDivElement>(null)
+  // const boardRef = useRef<HTMLDivElement>(null)
 
   // const pieceSymbols: { [key: string]: string } = {
   //   K: "♔",

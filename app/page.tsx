@@ -10,6 +10,7 @@ import ChessBoard from "@/components/chess-board"
 import Leaderboard from "@/components/leaderboard"
 import TournamentSection from "@/components/tournament-section"
 import ProInsights from "@/components/pro-insights"
+import Image from "next/image"
 
 export default function ChessPuzzleApp() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -47,9 +48,12 @@ export default function ChessPuzzleApp() {
       <Card className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-md border-purple-500/30">
         <CardContent className="p-6">
           <div className="flex items-center gap-4 mb-6">
-            <img
+            <Image
               src={userData.avatar || "/placeholder.svg"}
               alt="Profile"
+              width={64}
+              height={64}
+              quality={100}
               className="w-16 h-16 rounded-full border-2 border-white/20"
             />
             <div className="flex-1">
@@ -131,7 +135,7 @@ export default function ChessPuzzleApp() {
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              Today's Progress
+              Today&apos;s Progress
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
