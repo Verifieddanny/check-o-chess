@@ -55,27 +55,14 @@ export default function ChessBoard() {
 
   // const boardRef = useRef<HTMLDivElement>(null)
 
-  // const pieceSymbols: { [key: string]: string } = {
-  //   K: "♔",
-  //   Q: "♕",
-  //   R: "♖",
-  //   B: "♗",
-  //   N: "♘",
-  //   P: "♙",
-  //   k: "♚",
-  //   q: "♛",
-  //   r: "♜",
-  //   b: "♝",
-  //   n: "♞",
-  //   p: "♟",
-  // }
-    const pieceSymbols: { [key: string]: string } = {
-    K: "♚",
-    Q: "♛",
-    R: "♜",
-    B: "♝",
-    N: "♞",
-    P: "♟",
+  // Using text-based chess pieces for better iOS compatibility
+  const pieceSymbols: { [key: string]: string } = {
+    K: "♔",
+    Q: "♕",
+    R: "♖",
+    B: "♗",
+    N: "♘",
+    P: "♙",
     k: "♚",
     q: "♛",
     r: "♜",
@@ -275,8 +262,8 @@ export default function ChessBoard() {
         if (moveData.capture) {
           if (dr === forward && absDf === 1) {
             return true
+            return false
           }
-          return false
         }
         // Single forward
         if (df === 0 && dr === forward) {
@@ -579,7 +566,7 @@ export default function ChessBoard() {
     setBoard(newBoard)
   }
 
-  // Convert algebraic square (e.g. "e4") to matrix coordinates [rank, file].
+  // Convert algebraic square (e.e. "e4") to matrix coordinates [rank, file].
   const squareToCoords = (square: string): [number, number] => {
     const file = square.charCodeAt(0) - 97 // a=0, b=1, etc.
     const rank = 8 - Number.parseInt(square[1]) // 8=0, 7=1, etc.
@@ -898,18 +885,29 @@ export default function ChessBoard() {
   return (
     <Card className="bg-white/10 backdrop-blur-md border-white/20">
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
           <CardTitle className="text-white flex items-center gap-2">
             <div className="text-2xl">♞</div>
             Puzzle #{currentPuzzle.id || "00sHx"}
           </CardTitle>
-          <div className="flex gap-2">
-            {currentPuzzle.themes.map((theme, index) => (
-              <Badge key={index} className="bg-purple-500/20 text-purple-300 text-xs">
-                {theme}
+          <div className="flex flex-wrap gap-1 max-w-full">
+            {currentPuzzle.themes.slice(0, 3).map((theme, index) => (
+              <Badge 
+                key={index} 
+                className="bg-purple-500/20 text-purple-300 text-xs truncate max-w-[80px]"
+                title={theme}
+              >
+                {theme.length > 8 ? `${theme.substring(0, 7)}…` : theme}
               </Badge>
             ))}
-            <Badge className="bg-blue-500/20 text-blue-300">📊 {currentPuzzle.rating || 1760}</Badge>
+            {currentPuzzle.themes.length > 3 && (
+              <Badge className="bg-purple-500/20 text-purple-300 text-xs">
+                +{currentPuzzle.themes.length - 3}
+              </Badge>
+            )}
+            <Badge className="bg-blue-500/20 text-blue-300 text-xs">
+              📊 {currentPuzzle.rating || 1760}
+            </Badge>
           </div>
         </div>
       </CardHeader>
