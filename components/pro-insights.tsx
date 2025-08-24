@@ -40,7 +40,7 @@ export default function ProInsights() {
 
   if (!hasProAccess) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 mb-[6rem]">
         {/* Pro Access Locked */}
         <Card className="bg-gradient-to-r from-purple-500/20 to-amber-500/20 backdrop-blur-md border-purple-500/30">
           <CardContent className="p-8 text-center">

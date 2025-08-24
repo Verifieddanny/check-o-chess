@@ -883,7 +883,7 @@ export default function ChessBoard() {
   }
 
   return (
-    <Card className="bg-white/10 backdrop-blur-md border-white/20">
+    <Card className="bg-white/10 backdrop-blur-md border-white/20 mb-[6rem]">
       <CardHeader>
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
           <CardTitle className="text-white flex items-center gap-2">

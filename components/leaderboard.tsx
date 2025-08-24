@@ -63,7 +63,7 @@ export default function Leaderboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mb-[6rem]">
       <Tabs value={viewType} onValueChange={setViewType} className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-md border-white/20 rounded-2xl p-1">
           <TabsTrigger

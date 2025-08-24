@@ -15,6 +15,7 @@ import {
   Calendar,
   Play,
   ArrowLeft,
+  Home,
 } from "lucide-react";
 import ChessBoard from "@/components/chess-board";
 import Leaderboard from "@/components/leaderboard";
@@ -24,7 +25,7 @@ import Image from "next/image";
 
 export default function ChessPuzzleApp() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [currentScreen, setCurrentScreen] = useState("home"); // Changed from tab-based to screen-based navigation
+  const [currentScreen, setCurrentScreen] = useState("home");
   const currentStreak = 12;
   const dailyPuzzlesSolved = 1;
   const chessTokens = 2450;
@@ -80,9 +81,9 @@ export default function ChessPuzzleApp() {
               <h2 className="text-2xl font-bold text-white">
                 {userData.username}
               </h2>
-              <p className="text-purple-200">
+              {/* <p className="text-purple-200">
                 Connected: {userData.walletAddress}
-              </p>
+              </p> */}
               <div className="flex items-center gap-4 mt-2">
                 <Badge className="bg-blue-500/20 text-blue-300">
                   #{userData.rank} Global
@@ -321,46 +322,68 @@ export default function ChessPuzzleApp() {
         {/* Main Content */}
         {renderScreen()}
 
-        {/* Bottom Navigation - only show on home screen */}
-        {currentScreen === "home" && (
-          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-lg px-4">
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2">
-              <div className="flex gap-1 justify-between">
-                <Button
-                  onClick={() => navigateToScreen("puzzles")}
-                  className="flex-1 min-w-0 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl flex flex-col items-center h-14 text-xs sm:text-sm"
-                >
-                  <Target className="w-4 h-4 mb-1" />
-                  Puzzles
-                </Button>
-                <Button
-                  onClick={() => navigateToScreen("tournaments")}
-                  variant="outline"
-                  className="flex-1 min-w-0 border-white/20 text-purple-200 hover:bg-white/10 rounded-xl bg-transparent flex flex-col items-center h-14 text-xs sm:text-sm"
-                >
-                  <Trophy className="w-4 h-4 mb-1" />
-                  Tournaments
-                </Button>
-                <Button
-                  onClick={() => navigateToScreen("leaderboard")}
-                  variant="outline"
-                  className="flex-1 min-w-0 border-white/20 text-purple-200 hover:bg-white/10 rounded-xl bg-transparent flex flex-col items-center h-14 text-xs sm:text-sm"
-                >
-                  <Crown className="w-4 h-4 mb-1" />
-                  Leaderboard
-                </Button>
-                <Button
-                  onClick={() => navigateToScreen("insights")}
-                  variant="outline"
-                  className="flex-1 min-w-0 border-white/20 text-purple-200 hover:bg-white/10 rounded-xl bg-transparent flex flex-col items-center h-14 text-xs sm:text-sm"
-                >
-                  <BarChart3 className="w-4 h-4 mb-1" />
-                  Insights
-                </Button>
-              </div>
+        {/* Bottom Navigation - Always visible across all screens */}
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-lg px-4">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2">
+            <div className="flex gap-1 justify-between">
+              <Button
+                onClick={() => navigateToScreen("home")}
+                className={`flex-1 min-w-0 rounded-xl flex flex-col items-center h-14 text-xs sm:text-sm ${
+                  currentScreen === "home"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                    : "border-white/20 text-purple-200 hover:bg-white/10 bg-transparent"
+                }`}
+              >
+                <Home className="w-4 h-4 mb-1" />
+                <p className="text-[0.6rem]">Home</p>
+              </Button>
+              <Button
+                onClick={() => navigateToScreen("puzzles")}
+                className={`flex-1 min-w-0 rounded-xl flex flex-col items-center h-14 text-xs sm:text-sm ${
+                  currentScreen === "puzzles"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                    : "border-white/20 text-purple-200 hover:bg-white/10 bg-transparent"
+                }`}
+              >
+                <Target className="w-4 h-4 mb-1" />
+                <p className="text-[0.6rem]">Puzzles</p>
+              </Button>
+              <Button
+                onClick={() => navigateToScreen("tournaments")}
+                className={`flex-1 min-w-0 rounded-xl flex flex-col items-center h-14 text-xs sm:text-sm ${
+                  currentScreen === "tournaments"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                    : "border-white/20 text-purple-200 hover:bg-white/10 bg-transparent"
+                }`}
+              >
+                <Trophy className="w-4 h-4 mb-1" />
+                <p className="text-[0.6rem]">Tournaments</p>
+              </Button>
+              <Button
+                onClick={() => navigateToScreen("leaderboard")}
+                className={`flex-1 min-w-0 rounded-xl flex flex-col items-center h-14 text-xs sm:text-sm ${
+                  currentScreen === "leaderboard"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                    : "border-white/20 text-purple-200 hover:bg-white/10 bg-transparent"
+                }`}
+              >
+                <Crown className="w-4 h-4 mb-1" />
+                <p className="text-[0.6rem]">Leaderboard</p>
+              </Button>
+              <Button
+                onClick={() => navigateToScreen("insights")}
+                className={`flex-1 min-w-0 rounded-xl flex flex-col items-center h-14 text-xs sm:text-sm ${
+                  currentScreen === "insights"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                    : "border-white/20 text-purple-200 hover:bg-white/10 bg-transparent"
+                }`}
+              >
+                <BarChart3 className="w-4 h-4 mb-1" />
+                <p className="text-[0.6rem]">Insights</p>
+              </Button>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
