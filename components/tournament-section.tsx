@@ -346,15 +346,4 @@ export default function TournamentSection() {
     </div>
   )
 }
-//             Puzzles are sourced from the{" "}
-//             <a href="https://lichess.org/puzzle" target="_blank" rel="noopener noreferrer" className="underline">
-//               Lichess Puzzle Database
-//             </a>
-//             , which contains a vast collection of chess puzzles contributed by the community. All puzzles are licensed
-//             under CC0, allowing free use and distribution.
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   )
-// }
+

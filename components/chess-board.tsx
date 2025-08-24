@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
+import type React from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -29,8 +30,7 @@ interface PuzzleData {
 
 // default position used before a puzzle is fetched. This corresponds to the
 // starting position of the sample puzzle provided in the original code.
-const DEFAULT_FEN =
-  "q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17"
+const DEFAULT_FEN = "q3k1nr/1pp1nQpp/3p4/1P2p3/4P3/B1PP1b2/B5PP/5K2 b k - 0 17"
 
 export default function ChessBoard() {
   const [board, setBoard] = useState<Square[][]>([])
@@ -55,13 +55,27 @@ export default function ChessBoard() {
 
   const boardRef = useRef<HTMLDivElement>(null)
 
-  const pieceSymbols: { [key: string]: string } = {
-    K: "♔",
-    Q: "♕",
-    R: "♖",
-    B: "♗",
-    N: "♘",
-    P: "♙",
+  // const pieceSymbols: { [key: string]: string } = {
+  //   K: "♔",
+  //   Q: "♕",
+  //   R: "♖",
+  //   B: "♗",
+  //   N: "♘",
+  //   P: "♙",
+  //   k: "♚",
+  //   q: "♛",
+  //   r: "♜",
+  //   b: "♝",
+  //   n: "♞",
+  //   p: "♟",
+  // }
+    const pieceSymbols: { [key: string]: string } = {
+    K: "♚",
+    Q: "♛",
+    R: "♜",
+    B: "♝",
+    N: "♞",
+    P: "♟",
     k: "♚",
     q: "♛",
     r: "♜",
@@ -277,9 +291,7 @@ export default function ChessBoard() {
         return false
       }
       case "N":
-        return (
-          (absDr === 2 && absDf === 1) || (absDr === 1 && absDf === 2)
-        )
+        return (absDr === 2 && absDf === 1) || (absDr === 1 && absDf === 2)
       case "B": {
         if (absDr !== absDf) return false
         const stepR = dr > 0 ? 1 : -1
@@ -406,7 +418,7 @@ export default function ChessBoard() {
     }
     // Determine destination
     const toFile = moveData.dest.charCodeAt(0) - "a".charCodeAt(0)
-    const toRank = 8 - parseInt(moveData.dest[1], 10)
+    const toRank = 8 - Number.parseInt(moveData.dest[1], 10)
     const pieceType = moveData.piece
     // We will search for candidate pieces that can legally move to the
     // destination.
@@ -428,7 +440,7 @@ export default function ChessBoard() {
             if (f !== specFile) continue
           }
           if (disRankMatch) {
-            const specRank = 8 - parseInt(disRankMatch[0], 10)
+            const specRank = 8 - Number.parseInt(disRankMatch[0], 10)
             if (r !== specRank) continue
           }
         }
@@ -466,14 +478,14 @@ export default function ChessBoard() {
     let board = initialCharBoard()
     // Remove comments {...} and variations (...) from PGN
     let cleaned = pgn.replace(/\{[^}]*\}/g, "")
-    cleaned = cleaned.replace(/\([^)]*\)/g, "")
+    cleaned = cleaned.replace(/$$[^)]*$$/g, "")
     // Split tokens on whitespace and strip move numbers like "1." or "1..."
     const tokens = cleaned
       .split(/\s+/)
       .filter((tok) => tok.length > 0)
       // Filter out move numbers like '1.', '2...', etc.
       .filter((tok) => {
-        return !(/^\d+\.*$/.test(tok))
+        return !/^\d+\.*$/.test(tok)
       })
     let moveIndex = 0
     let color: "w" | "b" = "w"
@@ -698,16 +710,7 @@ export default function ChessBoard() {
         directions.forEach(([dr, df]) => addRayMoves(dr, df))
         break
       case "q":
-        directions.push(
-          [-1, -1],
-          [-1, 1],
-          [1, -1],
-          [1, 1],
-          [-1, 0],
-          [1, 0],
-          [0, -1],
-          [0, 1],
-        )
+        directions.push([-1, -1], [-1, 1], [1, -1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1])
         directions.forEach(([dr, df]) => addRayMoves(dr, df))
         break
       case "k": {
@@ -897,47 +900,44 @@ export default function ChessBoard() {
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-white flex items-center gap-2">
-            <div className="text-2xl">🧩</div>
-            Puzzle #{currentPuzzle.id}
-            {puzzleSolved && <div className="text-2xl">✅</div>}
+            <div className="text-2xl">♞</div>
+            Puzzle #{currentPuzzle.id || "00sHx"}
           </CardTitle>
-          <Badge className="bg-blue-500/20 text-blue-300">
-            {currentPuzzle.themes.includes("mateIn2")
-              ? "Mate in 2"
-              : currentPuzzle.themes.includes("mateIn3")
-                ? "Mate in 3"
-                : "Find Best Move"}
-          </Badge>
-        </div>
-
-        <div className="flex gap-2 flex-wrap mt-2">
-          {currentPuzzle.themes.slice(0, 3).map((theme, index) => (
-            <Badge key={index} className="bg-purple-500/20 text-purple-300 text-xs">
-              {theme}
-            </Badge>
-          ))}
-        </div>
-
-        <div className="flex gap-4 text-sm">
-          <div className="flex items-center gap-1 text-purple-200">
-            <Clock className="w-4 h-4" />
-            {formatTime(timeElapsed)}
-          </div>
-          <div className="flex items-center gap-1 text-purple-200">
-            <RotateCcw className="w-4 h-4" />
-            {moveHistory.length} moves
-          </div>
-          <div className="flex items-center gap-1 text-purple-200">
-            <Lightbulb className="w-4 h-4" />
-            {hintsUsed} hints
+          <div className="flex gap-2">
+            {currentPuzzle.themes.map((theme, index) => (
+              <Badge key={index} className="bg-purple-500/20 text-purple-300 text-xs">
+                {theme}
+              </Badge>
+            ))}
+            <Badge className="bg-blue-500/20 text-blue-300">📊 {currentPuzzle.rating || 1760}</Badge>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="p-6">
-        {/* Chess Board */}
-        <div className="aspect-square max-w-md mx-auto mb-6" ref={boardRef}>
-          <div className="grid grid-cols-8 gap-0 border-2 border-amber-400/50 rounded-xl overflow-hidden shadow-2xl">
+      <CardContent className="space-y-6">
+        {/* Puzzle Status */}
+        <div className="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-blue-400" />
+              <span className="text-white font-mono">{formatTime(timeElapsed)}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 text-yellow-400" />
+              <span className="text-white">{hintsUsed}/3</span>
+            </div>
+          </div>
+          {puzzleSolved && (
+            <div className="flex items-center gap-2 text-green-400">
+              <CheckCircle className="w-5 h-5" />
+              <span className="font-semibold">Solved!</span>
+            </div>
+          )}
+        </div>
+
+        {/* Chess Board - Made larger and improved piece styling */}
+        <div className="flex justify-center">
+          <div className="grid grid-cols-8 gap-0 border-2 border-amber-400/50 rounded-xl overflow-hidden shadow-2xl w-full max-w-2xl">
             {board.map((row, rankIndex) =>
               row.map((square, fileIndex) => {
                 const squareName = coordsToSquare(rankIndex, fileIndex)
@@ -949,7 +949,7 @@ export default function ChessBoard() {
                   <div
                     key={`${rankIndex}-${fileIndex}`}
                     className={`
-                       aspect-square flex items-center justify-center text-3xl cursor-pointer
+                       aspect-square flex items-center justify-center text-4xl cursor-pointer
                        transition-all duration-200 hover:scale-105 relative select-none
                        ${square.color === "light" ? "bg-amber-400 hover:bg-amber-200" : "bg-amber-800 hover:bg-amber-700"}
                        ${isSelected ? "ring-4 ring-blue-400 ring-inset" : ""}
@@ -965,7 +965,11 @@ export default function ChessBoard() {
                         className={`
                            drop-shadow-lg transition-transform duration-200 chess-piece
                            ${isSelected ? "scale-110" : ""}
-                           ${square.piece === square.piece.toUpperCase() ? "text-white" : "text-black"}
+                           ${
+                             square.piece === square.piece.toUpperCase()
+                               ? "text-white filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                               : "text-black filter drop-shadow-[0_2px_4px_rgba(255,255,255,0.3)]"
+                           }
                          `}
                         draggable
                         onDragStart={(e) => handleDragStart(e, rankIndex, fileIndex)}
@@ -976,7 +980,7 @@ export default function ChessBoard() {
 
                     {/* Legal move indicators */}
                     {isLegalMove && !square.piece && (
-                      <div className="w-4 h-4 bg-green-400 rounded-full opacity-60"></div>
+                      <div className="w-5 h-5 bg-green-400 rounded-full opacity-60"></div>
                     )}
 
                     {/* Square coordinates for selected square */}
@@ -998,54 +1002,62 @@ export default function ChessBoard() {
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="flex gap-3">
           <Button
-            variant="outline"
-            className="border-amber-400/50 text-amber-400 hover:bg-amber-400/10 rounded-xl bg-transparent"
             onClick={showHintMove}
-            disabled={puzzleSolved || currentMove >= currentPuzzle.moves.length}
+            disabled={hintsUsed >= 3 || puzzleSolved}
+            className="flex-1 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white rounded-xl disabled:opacity-50"
           >
             <Lightbulb className="w-4 h-4 mr-2" />
-            Hint
+            Hint ({3 - hintsUsed} left)
           </Button>
 
           <Button
-            variant="outline"
-            className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10 rounded-xl bg-transparent"
             onClick={resetPuzzle}
+            variant="outline"
+            className="flex-1 border-white/20 text-purple-200 hover:bg-white/10 rounded-xl bg-transparent"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             Reset
           </Button>
-
-          <Button
-            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl"
-            disabled={puzzleSolved}
-          >
-            <CheckCircle className="w-4 h-4 mr-2" />
-            {puzzleSolved ? "Solved!" : "Playing..."}
-          </Button>
         </div>
 
-        {/* Instructions */}
-        <div className="mt-4 p-4 bg-white/5 rounded-xl border border-white/10">
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-purple-200 text-sm">
-              <strong className="text-white">How to play:</strong> Click a piece to select it, then click the
-              destination square. You can also drag and drop pieces. Green dots show legal moves.
-            </p>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-amber-400">⭐ {currentPuzzle.popularity}%</span>
-              <span className="text-xs text-blue-400">📊 {currentPuzzle.rating}</span>
+        {/* Move History */}
+        {moveHistory.length > 0 && (
+          <div className="p-4 bg-white/5 rounded-xl">
+            <h4 className="text-white font-semibold mb-2">Move History</h4>
+            <div className="flex flex-wrap gap-2">
+              {moveHistory.map((move, index) => (
+                <Badge key={index} className="bg-blue-500/20 text-blue-300">
+                  {index + 1}. {move.from}-{move.to}
+                </Badge>
+              ))}
             </div>
           </div>
+        )}
 
-          {showHint && (
-            <div className="mt-2 p-2 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
-              <p className="text-yellow-300 text-xs">💡 Hint: Look at the highlighted squares!</p>
-            </div>
-          )}
-        </div>
+        {/* Solution hint */}
+        {showHint && (
+          <div className="p-4 bg-yellow-500/10 rounded-xl border border-yellow-500/30">
+            <p className="text-yellow-300 text-sm">
+              💡 Look for tactical opportunities! The highlighted squares show possible moves.
+            </p>
+          </div>
+        )}
+
+        {/* Puzzle solved message */}
+        {puzzleSolved && (
+          <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/30 text-center">
+            <div className="text-4xl mb-2">🎉</div>
+            <h3 className="text-green-400 font-bold text-lg mb-2">Puzzle Solved!</h3>
+            <p className="text-green-300 text-sm mb-4">
+              Great job! You earned 50 $CHESS tokens and maintained your streak.
+            </p>
+            <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl">
+              Next Puzzle
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   )
