@@ -175,7 +175,7 @@ export default function ChessPuzzleApp() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 mb-[6rem]">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Calendar className="w-5 h-5" />
